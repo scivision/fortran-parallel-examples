@@ -17,7 +17,11 @@ on:
 jobs:
 
   linux:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 5
 
     steps:
@@ -25,20 +29,8 @@ jobs:
 
     - name: CMake workflow
       run: cmake --workflow --preset default
-
-
-  macos:
-    runs-on: macos-latest
-    timeout-minutes: 5
-
-    env:
-      FC: gfortran-12
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: CMake workflow
-      run: cmake --workflow --preset default
+      env:
+        FC: gfortran-12
 
 
   windows:
