@@ -24,7 +24,9 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "NVHPC")
   # necessary for parallel run benefits
   # just "-stdpar" assumes GPU, which will fail if GPU not present
+  # like Intel compiler, needs both compile and link options
   add_compile_options(-stdpar=multicore)
+  add_link_options(-stdpar=multicore)
 endif()
 
 include(${CMAKE_CURRENT_LIST_DIR}/f202x_do_concurrent.cmake)
