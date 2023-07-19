@@ -18,18 +18,18 @@ jobs:
 
   linux:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: install Ninja
-      run: sudo apt install --no-install-recommends ninja-build
-
-    - run: cmake --workflow --preset default
+    - name: CMake workflow
+      run: cmake --workflow --preset default
 
 
   macos:
     runs-on: macos-latest
+    timeout-minutes: 5
 
     env:
       FC: gfortran-12
@@ -37,10 +37,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: install Ninja
-      run: brew install ninja
-
-    - run: cmake --workflow --preset default
+    - name: CMake workflow
+      run: cmake --workflow --preset default
 
 
   windows:
@@ -60,6 +58,8 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - run: cmake --workflow --preset default
+    - name: CMake workflow
+      timeout-minutes: 5
+      run: cmake --workflow --preset default
       env:
-        CMAKE_GENERATOR: ninja
+        CMAKE_GENERATOR: Ninja
