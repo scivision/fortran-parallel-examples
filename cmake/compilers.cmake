@@ -1,21 +1,17 @@
 include(CheckSourceCompiles)
 
+# parallel options--needed for "do concurrent" also.
+ add_compile_options(
+"$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>"
+ )
+
 if(CMAKE_Fortran_COMPILER_ID MATCHES "^Intel")
   add_compile_options(
   "$<$<COMPILE_LANGUAGE:Fortran>:-traceback;-heap-arrays>"
   "$<$<AND:$<COMPILE_LANGUAGE:Fortran>,$<CONFIG:Debug>>:-warn;-debug;-check>"
   )
-
-  # parallel options--needed for "do concurrent" also.
-
-  if(CMAKE_Fortran_COMPILER_ID MATCHES "^Intel")
-    if(CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
-      add_compile_options($<IF:$<BOOL:${WIN32}>,/Qiopenmp,-fiopenmp>)
-    endif()
-    add_link_options(-qopenmp)
-  endif()
+  add_link_options(-qopenmp)
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
-
   add_compile_options(
   $<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
   "$<$<AND:$<COMPILE_LANGUAGE:Fortran>,$<CONFIG:Release>>:-fno-backtrace;-Wno-maybe-uninitialized>"
