@@ -4,6 +4,7 @@ env:
   CC: icx
   CXX: icpx
   FC: ifx
+  CMAKE_BUILD_TYPE: Release
   CTEST_NO_TESTS_ACTION: error
 
 on:
@@ -26,24 +27,32 @@ jobs:
     timeout-minutes: 10
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - name: Intel Apt repository
-      timeout-minutes: 1
-      run: |
-        wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-        sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-        rm GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-        echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-        sudo apt-get update
+    - name: cache install oneAPI
+      id: cache-install
+      uses: actions/cache@v4
+      with:
+        path: |
+          /opt/intel/oneapi
+        key: install-apt
 
-    - name: Install Intel oneAPI
+    - name: non-cache install oneAPI
+      if: steps.cache-install.outputs.cache-hit != 'true'
       timeout-minutes: 5
-      run: sudo apt-get install intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic ninja-build
+      run: |
+        .github/workflows/oneapi_setup_apt_repo_linux.sh
+        sudo apt install intel-oneapi-compiler-fortran
 
     - name: Setup Intel oneAPI environment
       run: |
         source /opt/intel/oneapi/setvars.sh
         printenv >> $GITHUB_ENV
 
+
     - run: cmake --workflow --preset default
+
+
+    - name: exclude unused files from cache
+      if: steps.cache-install.outputs.cache-hit != 'true'
+      run: .github/workflows/oneapi_cache_exclude_linux.sh
