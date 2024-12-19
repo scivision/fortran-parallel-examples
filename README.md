@@ -26,3 +26,10 @@ For such a macOS install, tell CMake where OpenMP libraries are by setting envir
 ```sh
 export OpenMP_ROOT=/opt/homebrew/opt/libomp
 ```
+
+## OpenACC
+
+Not every compiler supports OpenACC.
+For example, Intel oneAPI does not support OpenACC, but provides a
+[migration tool](https://www.intel.com/content/www/us/en/developer/articles/technical/migration-of-openacc-api-to-openmp-api.html)
+from OpenACC to OpenMP.

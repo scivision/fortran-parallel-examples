@@ -31,7 +31,7 @@ call process(a, b, N)
 
 call system_clock(toc)
 
-print *, (toc-tic)*1000./trate, N
+print *, (toc-tic)*1000. / trate, N
 
 ! print *,b
 

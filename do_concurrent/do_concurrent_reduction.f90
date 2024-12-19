@@ -17,7 +17,7 @@ integer :: i
 allocate(x(n))
 
 ! Initialize x with random values between 0 and 1
-call random_seed()
+call random_init(.false., .false.)
 call random_number(x)
 
 do concurrent (i = 1: n) reduce(+:xsqs) reduce(max:mx)
