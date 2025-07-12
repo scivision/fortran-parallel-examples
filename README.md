@@ -4,8 +4,10 @@
 [![oneapi-linux](https://github.com/scivision/fortran-parallel-examples/actions/workflows/oneapi-linux.yml/badge.svg)](https://github.com/scivision/fortran-parallel-examples/actions/workflows/oneapi-linux.yml)
 
 Examples of parallel runtimes from native Fortran syntax.
-[Fortran coarrays or direct MPI operations](https://github.com/scivision/fortran-coarray-mpi-examples)
-are in a separate repo.
+[direct MPI operations](https://github.com/scivision/fortran-mpi-examples)
+or
+[Fortran Coarrays](https://github.com/scivision/fortran-coarray-examples)
+are in separate repos.
 
 Examples include:
 
