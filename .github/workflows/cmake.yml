@@ -19,22 +19,38 @@ on:
 jobs:
 
   linux:
-    strategy:
-      matrix:
-        os: [ubuntu-24.04, macos-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:
     - &checkout
       uses: actions/checkout@v5
 
-    - if: runner.os == 'macOS'
-      run: echo "FC=gfortran-15" >> $GITHUB_ENV
-
     - &default
       run: cmake --workflow default
+
+
+  mac:
+    runs-on: macos-latest
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        fc: [flang, gfortran-15]
+
+    env:
+      FC: ${{ matrix.fc }}
+
+    steps:
+    - name: prereqs
+      if: ${{ matrix.fc == 'flang' }}
+      run: |
+        brew install flang libomp
+        echo "OpenMP_ROOT=$(brew --prefix)/opt/libomp" >> $GITHUB_ENV
+
+    - *checkout
+
+    - *default
 
 
 
