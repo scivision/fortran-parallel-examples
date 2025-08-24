@@ -34,3 +34,7 @@ endif()
 add_executable(simple_openacc simple_openacc.f90)
 target_link_libraries(simple_openacc PRIVATE OpenACC::OpenACC_Fortran)
 add_test(NAME OpenACCsimple COMMAND simple_openacc)
+
+add_executable(openacc_sync openacc_async.f90)
+target_link_libraries(openacc_sync PRIVATE OpenACC::OpenACC_Fortran)
+add_test(NAME OpenACC_Async COMMAND openacc_sync)
