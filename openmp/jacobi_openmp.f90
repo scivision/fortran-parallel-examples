@@ -1,7 +1,7 @@
 program jacobi_omp
 !! https://nanohub.org/resources/19384/download/Directive_Based_Programming.pdf
 
-use, intrinsic :: iso_fortran_env, only : int64
+use, intrinsic :: iso_fortran_env, only : int64, real64
 implicit none
 
 integer(int64) :: tic, toc, trate
@@ -53,6 +53,6 @@ end do
 
 call system_clock(toc)
 
-print *, real(toc-tic)*1000./ real(trate), iter
+print *, real(toc-tic, real64)*1000 / trate, iter
 
 end program

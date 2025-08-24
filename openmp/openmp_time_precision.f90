@@ -1,6 +1,6 @@
 program timeprec
 !! demonstrates  timing methods
-use, intrinsic:: iso_fortran_env, only: dp=>real64, int64
+use, intrinsic:: iso_fortran_env, only: real64, int64
 
 implicit none
 
@@ -10,7 +10,7 @@ call system_clock(tic,count_rate=rate)
 call timempi()
 call system_clock(toc)
 
-print '(A,ES12.5,A)','intrinsic time: ',(toc-tic)/real(rate,dp),' seconds.'
+print '(A,f9.3,A)','intrinsic time: ', real(toc-tic, real64) * 1000 / rate,' milliseconds.'
 
 
 contains
@@ -21,7 +21,7 @@ subroutine timempi()
 use omp_lib
 
 integer :: Ncore, Nthread
-real(dp) :: tic,toc,rate
+real(real64) :: tic,toc,rate
 
 rate = omp_get_wtick()
 print '(A,ES10.3,A)','OpenMP tick time: ',rate,' second.'
@@ -40,7 +40,8 @@ Nthread = omp_get_num_threads()
 
 toc = omp_get_wtime()
 
-print *,'Thread: ',omp_get_thread_num(),(toc-tic)/rate
+print '(a,1x,i0,1x,a,1x,f9.3)','Thread:',omp_get_thread_num(),'elapsed (milliseconds):', &
+  real(toc-tic, real64) / rate
 
 !$omp end parallel
 end subroutine timempi
