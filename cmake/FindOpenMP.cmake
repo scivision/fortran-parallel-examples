@@ -154,7 +154,9 @@ using the C language component:
 #]=======================================================================]
 
 cmake_policy(PUSH)
+if(POLICY CMP0159)
 cmake_policy(SET CMP0159 NEW) # file(STRINGS) with REGEX updates CMAKE_MATCH_<n>
+endif()
 
 function(_OPENMP_FLAG_CANDIDATES LANG)
   if(NOT OpenMP_${LANG}_FLAG)
