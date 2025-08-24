@@ -12,9 +12,11 @@ set(CMAKE_REQUIRED_LIBRARIES ${OpenMP_Fortran_LIBRARIES})
 
 check_source_compiles(Fortran
 "program test
-use, intrinsic:: iso_fortran_env, only: int64
+use, intrinsic :: iso_fortran_env, only: int64
+use omp_lib
+
 implicit none
-integer(int64), external :: omp_get_wtick
+
 integer(int64) :: rate
 rate = omp_get_wtick()
 end program"
@@ -22,8 +24,7 @@ HAS_OpenMP
 )
 
 if(NOT HAS_OpenMP)
-  message(STATUS "OpenMP tests skipped")
-  return()
+  message(FATAL_ERROR "OpenMP could not link; see ${CMAKE_BINARY_DIR}/CMakeFiles/CMakeConfigureLog.yaml")
 endif()
 
 
