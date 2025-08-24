@@ -4,13 +4,11 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang" AND CMAKE_VERSION VERSION_LESS
   list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 endif()
 
-find_package(OpenMP COMPONENTS Fortran)
+find_package(OpenMP COMPONENTS Fortran REQUIRED)
 
 set(CMAKE_REQUIRED_FLAGS ${OpenMP_Fortran_FLAGS})
 set(CMAKE_REQUIRED_INCLUDES ${OpenMP_Fortran_INCLUDE_DIRS})
 set(CMAKE_REQUIRED_LIBRARIES ${OpenMP_Fortran_LIBRARIES})
-
-if(OpenMP_Fortran_FOUND)
 
 check_source_compiles(Fortran
 "program test
@@ -22,8 +20,6 @@ rate = omp_get_wtick()
 end program"
 HAS_OpenMP
 )
-
-endif()
 
 if(NOT HAS_OpenMP)
   message(STATUS "OpenMP tests skipped")
