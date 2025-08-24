@@ -26,3 +26,6 @@ Not every compiler supports OpenACC.
 For example, Intel oneAPI does not support OpenACC, but provides a
 [migration tool](https://www.intel.com/content/www/us/en/developer/articles/technical/migration-of-openacc-api-to-openmp-api.html)
 from OpenACC to OpenMP.
+
+NVIDIA HPC SDK generally shows a clear (say 10s of percent) runtime improvement with OpenACC on these example.
+Other compilers like GCC might show little advantage.
