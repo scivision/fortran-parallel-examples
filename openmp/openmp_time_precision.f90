@@ -21,10 +21,9 @@ subroutine timempi()
 use omp_lib
 
 integer :: Ncore, Nthread
-real(real64) :: tic,toc,rate
+real(real64) :: tic,toc
 
-rate = omp_get_wtick()
-print '(A,ES10.3,A)','OpenMP tick time: ',rate,' second.'
+print '(A,ES10.3,A)','OpenMP tick time: ',omp_get_wtick(),' second.'
 
 !$omp parallel private(tic,toc)
 
@@ -33,15 +32,16 @@ tic = omp_get_wtime()
 Ncore = omp_get_num_procs()
 Nthread = omp_get_num_threads()
 
+!! OpenMP 5.1 introduced "masked" to replace "master"
+!! https://www.openmp.org/wp-content/uploads/OpenMPRefCard-5.1-web.pdf
 
-!$omp masked
+!$omp master
   print *,Nthread,'CPU threads used.',Ncore,' processor cores detected.'
-!$omp end masked
+!$omp end master
 
 toc = omp_get_wtime()
 
-print '(a,1x,i0,1x,a,1x,f9.3)','Thread:',omp_get_thread_num(),'elapsed (milliseconds):', &
-  real(toc-tic, real64) / rate
+print '(a,1x,i0,1x,a,1x,f9.3)','Thread:',omp_get_thread_num(),'elapsed (milliseconds):', (toc-tic) * 1000
 
 !$omp end parallel
 end subroutine timempi
