@@ -17,17 +17,8 @@ Examples include:
 
 ## OpenMP
 
-macOS users may need to install OpenMP libraries:
-
-```sh
-brew install libomp
-```
-
-For such a macOS install, tell CMake where OpenMP libraries are by setting environment variable:
-
-```sh
-export OpenMP_ROOT=/opt/homebrew/opt/libomp
-```
+macOS users may need to
+[install OpenMP library](https://gist.github.com/scivision/16c2ca1dc250f54d34f1a1a35596f4a0).
 
 ## OpenACC
 
