@@ -10,7 +10,7 @@ include(CheckSourceCompiles)
 add_link_options("$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-qopenmp>")
 
 add_compile_options(
-$<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
+$<$<COMPILE_LANG_AND_ID:Fortran,GNU>:-fimplicit-none>
 "$<$<AND:$<COMPILE_LANG_AND_ID:Fortran,GNU>,$<CONFIG:Release>>:-fno-backtrace;-Wno-maybe-uninitialized>"
 "$<$<AND:$<COMPILE_LANG_AND_ID:Fortran,GNU>,$<CONFIG:Debug>>:-Wall;-fcheck=all;-Werror=array-bounds>"
 )
