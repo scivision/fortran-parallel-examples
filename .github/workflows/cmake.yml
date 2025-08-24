@@ -52,6 +52,12 @@ jobs:
 
     - *default
 
+    - name: upload CMakeConfigureLog.yaml
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ runner.os }}-${{ matrix.fc }}-CMakeConfigureLog.yaml
+        path: build/CMakeFiles/CMakeConfigureLog.yaml
 
 
   windows:
