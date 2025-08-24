@@ -12,13 +12,13 @@ call system_clock(toc)
 
 print '(A,ES12.5,A)','intrinsic time: ',(toc-tic)/real(rate,dp),' seconds.'
 
+
 contains
+
 
 subroutine timempi()
 
-use omp_lib, only : omp_get_wtime, omp_get_num_procs, omp_get_num_threads, omp_get_thread_num
-
-integer(int64), external :: omp_get_wtick
+use omp_lib
 
 integer :: Ncore, Nthread
 real(dp) :: tic,toc,rate
@@ -34,9 +34,9 @@ Ncore = omp_get_num_procs()
 Nthread = omp_get_num_threads()
 
 
-!$omp master
+!$omp masked
   print *,Nthread,'CPU threads used.',Ncore,' processor cores detected.'
-!$omp end master
+!$omp end masked
 
 toc = omp_get_wtime()
 
@@ -44,5 +44,6 @@ print *,'Thread: ',omp_get_thread_num(),(toc-tic)/rate
 
 !$omp end parallel
 end subroutine timempi
+
 
 end program
