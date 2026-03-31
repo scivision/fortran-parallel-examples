@@ -1,10 +1,8 @@
 name: cmake
 
 env:
-  CTEST_NO_TESTS_ACTION: error
   HOMEBREW_NO_INSTALL_CLEANUP: 1
-  CMAKE_BUILD_TYPE: Release
-  CMAKE_GENERATOR: Ninja
+  FC: gfortran
 
 on:
   push:
@@ -24,10 +22,17 @@ jobs:
 
     steps:
     - &checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - &default
       run: cmake --workflow default
+
+    - &log
+      if: failure()
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ runner.os }}-${{ env.FC }}-CMakeConfigureLog.yaml
+        path: build/CMakeFiles/CMakeConfigureLog.yaml
 
 
   mac:
@@ -46,19 +51,14 @@ jobs:
       if: ${{ matrix.fc == 'flang' }}
       run: |
         brew install flang libomp
-        echo "OpenMP_ROOT=$(brew --prefix)/opt/libomp" >> $GITHUB_ENV
-        echo "LDFLAGS=-L$(brew --prefix)/opt/libomp/lib" >> $GITHUB_ENV
+        echo "OpenMP_ROOT=${HOMEBREW_PREFIX}/opt/libomp" >> $GITHUB_ENV
+        echo "LDFLAGS=-L${HOMEBREW_PREFIX}/opt/libomp/lib" >> $GITHUB_ENV
 
     - *checkout
 
     - *default
 
-    - name: upload CMakeConfigureLog.yaml
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ runner.os }}-${{ matrix.fc }}-CMakeConfigureLog.yaml
-        path: build/CMakeFiles/CMakeConfigureLog.yaml
+    - *log
 
 
   windows:
@@ -79,3 +79,5 @@ jobs:
     - *checkout
 
     - *default
+
+    - *log
