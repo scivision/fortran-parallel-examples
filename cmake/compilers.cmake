@@ -1,13 +1,24 @@
 include(CheckSourceCompiles)
 
-# parallel options--needed for "do concurrent" also.
- add_compile_options(
-"$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>"
-"$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-traceback;-heap-arrays>"
-"$<$<AND:$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>,$<CONFIG:Debug>>:-warn;-debug;-check>"
- )
+check_source_compiles(Fortran
+"program test
+implicit none
+integer :: i
+real :: s = 0.0, m = 0.0
+real :: x(10) = 1.0
 
-add_link_options("$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-qopenmp>")
+do concurrent (i = 1:10) reduce(+:s) reduce(max:m)
+s = s + x(i)
+m = max(m, x(i))
+end do
+end program"
+f202x_do_concurrent
+)
+
+add_compile_options(
+"$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-traceback>"
+"$<$<AND:$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>,$<CONFIG:Debug>>:-warn;-debug;-check>"
+)
 
 add_compile_options(
 $<$<COMPILE_LANG_AND_ID:Fortran,GNU>:-fimplicit-none>
@@ -20,5 +31,3 @@ $<$<COMPILE_LANG_AND_ID:Fortran,GNU>:-fimplicit-none>
 # like Intel compiler, needs both compile and link options
 add_compile_options("$<$<COMPILE_LANG_AND_ID:Fortran,NVHPC>:-stdpar=multicore>")
 add_link_options("$<$<COMPILE_LANG_AND_ID:Fortran,NVHPC>:-stdpar=multicore>")
-
-include(${CMAKE_CURRENT_LIST_DIR}/f202x_do_concurrent.cmake)

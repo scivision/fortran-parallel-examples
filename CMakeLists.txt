@@ -13,8 +13,20 @@ message(STATUS "CMake ${CMAKE_VERSION}")
 
 include(cmake/compilers.cmake)
 
-foreach(d IN ITEMS do_concurrent openacc openmp)
-  add_subdirectory(${d})
-endforeach()
+find_package(OpenMP COMPONENTS Fortran)
+# do_concurrent also require OpenMP on some compilers.
+
+if(f202x_do_concurrent)
+  add_subdirectory(do_concurrent)
+endif()
+
+if(OpenMP_Fortran_FOUND)
+  add_subdirectory(openmp)
+endif()
+
+find_package(OpenACC)
+if(OpenACC_Fortran_FOUND)
+  add_subdirectory(openacc)
+endif()
 
 file(GENERATE OUTPUT .gitignore CONTENT "*")

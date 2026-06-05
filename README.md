@@ -11,9 +11,19 @@ are in separate repos.
 
 Examples include:
 
-* do concurrent: including Fortran 202x "reduce" syntax supported by NVIDIA HPC SDK and Intel oneAPI
+* do concurrent: including Fortran 202x "reduce" syntax
 * OpenACC: directive for Fortran
 * openmp: OpenMP threading examples
+
+## do concurrent
+
+`do concurrent` was enhanced in Fortran 202x including "reduce" syntax.
+Intel oneAPI
+[requires OpenMP](https://www.intel.com/content/www/us/en/docs/fortran-compiler/developer-guide-reference/2026-0/do-concurrent.html)
+to parallelize `do concurrent`.
+The LLVM Flang compiler team has written a thoughtful
+[article](https://flang.llvm.org/docs/DoConcurrent.html)
+on the characteristics and limitations of `do concurrent` parallelization.
 
 ## OpenMP
 
@@ -27,5 +37,5 @@ For example, Intel oneAPI does not support OpenACC, but provides a
 [migration tool](https://www.intel.com/content/www/us/en/developer/articles/technical/migration-of-openacc-api-to-openmp-api.html)
 from OpenACC to OpenMP.
 
-NVIDIA HPC SDK generally shows a clear (say 10s of percent) runtime improvement with OpenACC on these example.
+NVIDIA HPC SDK generally shows 10s of percent runtime improvement with OpenACC on this example.
 Other compilers like GCC might show little advantage.

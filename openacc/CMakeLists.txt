@@ -1,14 +1,9 @@
 set_property(DIRECTORY PROPERTY LABELS openacc)
 
-find_package(OpenACC)
-
-if(OpenACC_Fortran_FOUND)
-
 set(CMAKE_REQUIRED_LIBRARIES OpenACC::OpenACC_Fortran)
 
 check_source_compiles(Fortran
-"
-program simple
+"program simple
 implicit none
 integer :: i, x(2)
 
@@ -17,12 +12,9 @@ do i = 1, 2
   x(i) = i
 enddo
 
-end program
-"
+end program"
 HAS_OpenACC
 )
-
-endif()
 
 if(NOT HAS_OpenACC)
   message(STATUS "SKIP: OpenACC")

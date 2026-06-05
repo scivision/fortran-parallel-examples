@@ -1,12 +1,5 @@
 set_property(DIRECTORY PROPERTY LABELS openmp)
 
-if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang" AND CMAKE_VERSION VERSION_LESS 4.2)
-  message(WARNING "OpenMP support in Flang is only available in CMake 4.2 and later; skipping OpenMP tests")
-  return()
-endif()
-
-find_package(OpenMP COMPONENTS Fortran REQUIRED)
-
 set(CMAKE_REQUIRED_LIBRARIES OpenMP::OpenMP_Fortran)
 
 check_source_compiles(Fortran
