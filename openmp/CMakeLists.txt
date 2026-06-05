@@ -20,7 +20,7 @@ if(NOT HAS_OpenMP)
 endif()
 
 
-add_executable(timeprec openmp_time_precision.f90)
+add_executable(timeprec openmp_time_precision.F90)
 target_link_libraries(timeprec PRIVATE OpenMP::OpenMP_Fortran)
 add_test(NAME TimeMeasure COMMAND timeprec)
 set_tests_properties(TimeMeasure PROPERTIES RUN_SERIAL true)

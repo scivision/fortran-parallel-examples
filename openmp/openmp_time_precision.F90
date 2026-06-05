@@ -34,10 +34,17 @@ Nthread = omp_get_num_threads()
 
 !! OpenMP 5.1 introduced "masked" to replace "master"
 !! https://www.openmp.org/wp-content/uploads/OpenMPRefCard-5.1-web.pdf
-
+#if _OPENMP >= 202011
+!$omp masked
+#else
 !$omp master
+#endif
   print *,Nthread,'CPU threads used.',Ncore,' processor cores detected.'
+#if _OPENMP >= 202011
+!$omp end masked
+#else
 !$omp end master
+#endif
 
 toc = omp_get_wtime()
 
