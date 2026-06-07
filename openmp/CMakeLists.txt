@@ -23,9 +23,9 @@ endif()
 add_executable(timeprec openmp_time_precision.F90)
 target_link_libraries(timeprec PRIVATE OpenMP::OpenMP_Fortran)
 add_test(NAME TimeMeasure COMMAND timeprec)
-set_tests_properties(TimeMeasure PROPERTIES RUN_SERIAL true)
 
 add_executable(jacobi jacobi_openmp.f90)
 target_link_libraries(jacobi PRIVATE OpenMP::OpenMP_Fortran)
 add_test(NAME Jacobi COMMAND jacobi)
-set_tests_properties(Jacobi PROPERTIES RUN_SERIAL true)
+
+set_tests_properties(Jacobi TimeMeasure PROPERTIES RUN_SERIAL true)
